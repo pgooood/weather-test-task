@@ -12,6 +12,11 @@
 			class="form-control border-0"
 			placeholder="Add a city…"
 		/>
+		<ul class="dropdown-menu">
+			<li><a class="dropdown-item" href="#">Action</a></li>
+			<li><a class="dropdown-item" href="#">Another action</a></li>
+			<li><a class="dropdown-item" href="#">Something else here</a></li>
+		</ul>
 		<button class="btn btn-primary rounded py-2 px-4" type="button">
 			Add
 		</button>

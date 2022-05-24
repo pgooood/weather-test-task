@@ -1,28 +1,64 @@
 $font-family-sans-serif: 'Poppins', sans-serif;
 $font-size-base: 1.125rem;
+$small-font-size: .9rem;
+$font-weight-normal: 300;
+$font-weight-bold: 600;
+$headings-font-weight: 600;
+$dt-font-weight: 500;
 
 $primary: #04353C;
 $dark: $primary;
+$light: #0A545F;
 
 $theme-colors: (
 	primary: $primary,
+	light: $light,
 	dark: $dark
 );
 
-$body-bg: #0A545F;
+$body-bg: $light;
 $body-color: $primary;
 
-$border-radius-sm: .3rem;
-$border-radius: .5rem;
-$border-radius-lg: .7rem;
+$border-radius-sm: 1rem;
+$border-radius: 1rem;
+$border-radius-lg: 1rem;
 
 @import "node_modules/bootstrap/scss/bootstrap";
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
+b,
+strong {
+	font-weight: $font-weight-bold;
+}
+
+.btn-sm,
+.btn,
+.card{
+	border-radius: .5rem;
+}
+
+.rounded{
+	border-radius: .5rem !important;
+}
 
 .page-body{
 	background-image: url('../images/body-bg.png');
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
+}
+
+dl.inline{
+	dt {
+		display: inline-block;
+		margin-right: 1rem;
+	}
+	dd {
+		display: inline;
+		margin: 0 ;
+	}
+	dd:after {
+		display: block;
+		content: "";
+	}
 }
