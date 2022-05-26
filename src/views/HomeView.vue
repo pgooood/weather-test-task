@@ -1,6 +1,9 @@
 <script setup>
-import CityAppend from "@/components/CityAppend.vue";
-import CityListItem from "@/components/CityListItem.vue";
+import CityAppend from '@/components/CityAppend.vue'
+import CityListItem from '@/components/CityListItem.vue'
+import { useCitiesStore } from '@/stores/CitiesStore'
+
+const citiesStore = useCitiesStore()
 </script>
 
 <template>
@@ -10,21 +13,10 @@ import CityListItem from "@/components/CityListItem.vue";
 				<city-append />
 			</div>
 		</section>
+		{{ citiesStore.cities }}
 		<section class="row city-list">
-			<div class="col-sm-4 mb-4">
-				<city-list-item city="Novi Sad" country="Serbia" t="22" />
-			</div>
-			<div class="col-sm-4 mb-4">
-				<city-list-item city="Belgrade" country="Serbia" t="18" />
-			</div>
-			<div class="col-sm-4 mb-4">
-				<city-list-item city="Nice" country="France" t="12" />
-			</div>
-			<div class="col-sm-4 mb-4">
-				<city-list-item city="Barcelona" country="Spain" t="12" />
-			</div>
-			<div class="col-sm-4 mb-4">
-				<city-list-item city="Budapest" country="Hungary" t="15" />
+			<div v-for="location in citiesStore.locations" :key="location.id" class="col-sm-4 mb-4">
+				<city-list-item :city="location.address.city" :country="location.address.countryName" t="22" />
 			</div>
 		</section>
 	</main>

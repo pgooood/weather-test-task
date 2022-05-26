@@ -1,5 +1,14 @@
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
+import { onUnmounted } from 'vue'
+import { RouterLink, RouterView } from 'vue-router'
+import { useCitiesStore } from '@/stores/CitiesStore'
+
+const citiesStore = useCitiesStore()
+const unsub = citiesStore.$subscribe(() => {
+	localStorage.setItem('citiesData', JSON.stringify(citiesStore.locations));
+});
+onUnmounted(() => unsub());
+
 </script>
 
 <template>
