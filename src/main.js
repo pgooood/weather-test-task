@@ -8,10 +8,10 @@ import './assets/scss/style.scss'
 import 'bootstrap'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faSun, faPlus, faSpinner} from '@fortawesome/free-solid-svg-icons'
+import { faSun, faMoon, faCloud, faCloudShowersHeavy, faSnowflake, faCloudSun, faCloudMoon,  faPlus, faSpinner} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faSun, faPlus, faSpinner)
+library.add(faSun, faMoon, faCloud, faCloudShowersHeavy, faSnowflake, faCloudSun, faCloudMoon, faPlus, faSpinner)
 
 
 const app = createApp(App)

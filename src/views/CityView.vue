@@ -5,26 +5,26 @@
 				<div class="card card-body">
 					<div class="row">
 						<div class="col">
-							<h1 class="h4 mb-4">{{ $route.params.name }}</h1>
-							<p class="small mb-2">Vojvodina, Serbia</p>
-							<p class="small mb-2">45.2396° N, 19.8227° E</p>
+							<h1 class="h4 mb-4">{{ location.name }}</h1>
+							<p class="small mb-2">{{ location.region }}, {{ location.country }}</p>
+							<p class="small mb-2">{{ location.lat }}° N, {{ location.lon }}° E</p>
 						</div>
 						<div class="col city-block__weather">
-							<font-awesome-icon :icon="['fas', 'sun']" class="my-2"/>
-							<div><b>22°C</b></div>
+							<font-awesome-icon v-if="currentIcon.length" :icon="currentIcon" class="my-2"/>
+							<div><b>{{ current.temperature }}°C</b></div>
 						</div>
 						<div class="col city-block__weather-details small">
 							<dl class="inline mb-0">
 								<dt>Feels like</dt>
-								<dd>20°C</dd>
+								<dd>{{ current.feelslike }}°C</dd>
 								<dt>Humidity</dt>
-								<dd>41%</dd>
+								<dd>{{ current.humidity }}%</dd>
 								<dt>Pressure</dt>
-								<dd>1005 mbar</dd>
+								<dd>{{ current.pressure }} mbar</dd>
 								<dt>Wind</dt>
-								<dd>3.1 m/s SE</dd>
+								<dd>{{ current.wind_speed }} m/s {{ current.wind_dir }}</dd>
 								<dt>UV index</dt>
-								<dd>Low</dd>
+								<dd>{{ current.uv_index_explain }}</dd>
 							</dl>
 						</div>
 					</div>
@@ -32,39 +32,45 @@
 			</div>
 		</section>
 		<section class="weather-block card mb-4">
-			<div class="card-body">
-				<h3 class="h5">Thursday, Apr 07.</h3>
+			<div v-for="forecast in forecastList" :key="forecast.date" class="card-body">
+				<h3 class="h5">{{ moment(forecast.date).format('dddd, MMM DD.') }}</h3>
 				<ul class="list-unstyled d-flex mb-0 overflow-auto">
-					<li v-for='hour in 23' :key='hour' class="flex-fill p-2">
-						<p class="small">{{ hour }}h</p>
-						<font-awesome-icon :icon="['fas', 'sun']" class="my-2"/>
-						<p><b>13°</b></p>
-					</li>
-				</ul>
-			</div>
-			<div class="card-body">
-				<h3 class="h5">Thursday, Apr 07.</h3>
-				<ul class="list-unstyled d-flex mb-0 overflow-auto">
-					<li v-for='hour in 23' :key='hour' class="flex-fill p-2">
-						<p class="small">{{ hour }}h</p>
-						<font-awesome-icon :icon="['fas', 'sun']" class="my-2"/>
-						<p><b>13°</b></p>
-					</li>
-				</ul>
-			</div>
-			<div class="card-body">
-				<h3 class="h5">Thursday, Apr 07.</h3>
-				<ul class="list-unstyled d-flex mb-0 overflow-auto">
-					<li v-for='hour in 23' :key='hour' class="flex-fill p-2">
-						<p class="small">{{ hour }}h</p>
-						<font-awesome-icon :icon="['fas', 'sun']" class="my-2"/>
-						<p><b>13°</b></p>
+					<li v-for="hour in forecast.hourly" :key="hour.time" class="flex-fill p-2">
+						<p class="small">{{ hour.time.slice(0,-2) || 0 }}h</p>
+						<font-awesome-icon :icon="weatherStore.weatherIcon(hour.weather_code,hour.time)" class="my-2"/>
+						<p><b>{{ hour.temperature }}°</b></p>
 					</li>
 				</ul>
 			</div>
 		</section>
 	</main>
 </template>
+
+<script setup>
+import { useWeatherStore } from '@/stores/WeatherStore'
+import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import moment from 'moment'
+
+const currentIcon = ref([])
+const location = ref({})
+const current = ref({})
+const forecastList = ref({})
+const weatherStore = useWeatherStore();
+const route = useRoute()
+
+
+weatherStore.fetchForecast(route.params.name)
+	.then(data => {
+		location.value = data.location
+		current.value = data.current
+		forecastList.value = data.forecast
+		currentIcon.value = weatherStore.weatherIcon(
+				data.current.weather_code,
+				moment(data.location.localtime_epoch).format('H00')
+			)
+	})
+</script>
 
 <style lang="scss">
 	.weather-block{
@@ -88,9 +94,3 @@
 		line-height: 1.8rem;
 	}
 </style>
-
-<script setup>
-// defineProps({
-// 	name: String,
-// });
-</script>

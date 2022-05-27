@@ -19,6 +19,11 @@ export const useCitiesStore = defineStore({
 			}
 
 		},
+		/**
+		 * Because of weatherstack.com Location Lookup/Autocomplete (https://weatherstack.com/documentation#location_lookup)
+		 * Available on: Standard Plan and higher
+		 * I used hereapi.com instead
+		 */
 		async fetchLookup(query) {
 			try {
 				if (!query.length) {

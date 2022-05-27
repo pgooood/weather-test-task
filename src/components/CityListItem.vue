@@ -1,11 +1,3 @@
-<script setup>
-defineProps({
-	city: String,
-	country: String,
-	t: String,
-});
-</script>
-
 <template>
 	<div class="card">
 		<div class="card-body text-center p-4">
@@ -16,9 +8,26 @@ defineProps({
 				{{ country }}
 			</h6>
 			<p class="card-text fs-2 mb-4">
-				<strong>{{ t }}°C</strong>
+				<strong>{{ temp }}°C</strong>
 			</p>
-			<RouterLink :to="{ name: 'cityDetail', params: { name: city }}" class="btn btn-sm p-2 btn-primary d-block">View City</RouterLink>
+			<RouterLink :to="{ name: 'cityDetail', params: { name: locationTitle }}" class="btn btn-sm p-2 btn-primary d-block">View City</RouterLink>
 		</div>
 	</div>
 </template>
+
+<script setup>
+import { useWeatherStore } from '@/stores/WeatherStore'
+import { ref } from 'vue'
+
+const props = defineProps({
+	city: String,
+	country: String,
+})
+const temp = ref('...')
+const locationTitle = `${props.city}, ${props.country}`
+const weatherStore = useWeatherStore();
+
+weatherStore.fetchCurrent(locationTitle)
+	.then(data => temp.value = data.current.temperature)
+
+</script>
